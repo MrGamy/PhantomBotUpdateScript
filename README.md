@@ -12,6 +12,10 @@ The standard configuration assumes you followed the [Linux setup guide](https://
 
 I would suggest using an additional backup utility like [Borg](https://www.borgbackup.org/) for long term backups.
 
+To automatically run this script every day at 10am add  
+`0 10 * * * /home/botuser/PhantomBotUpdate.sh`  
+to your crontab (crontab -e)
+
 ## Variables
 
 There are 3 variables you can change:

@@ -65,7 +65,7 @@ function updatecheck()
 function update()
 {
 
-    printf "update"
+    echo "update"
 
     #Stop the bot and wait 15 seconds to ensure shutdown
     sudo /bin/systemctl stop phantombot
@@ -74,31 +74,26 @@ function update()
     #Download
     wget -q $dLink
 
-    delay
-
     backup
 
     #Unzip
     unzip -q $archive
-    delay
 
     #Move to standard bot folder
     mv $scriptPath/${archive::-4} $botPath
-    delay
 
     #Import Database
     cp -R $scriptPath/bot-backup/config/ $botPath
     cp -R $scriptPath/bot-backup/scripts/lang/custom $botPath/scripts/lang
-
-    delay
-    delay
 
     #Change Ownership
     chmod u+x $botPath/launch.sh $botPath/launch-service.sh $botPath/java-runtime-linux/bin/java
 
     #Delete the downloaded archive
     rm ./$archive
-    delay
+    
+    #Update the version number
+    printf $version > $botPath/version.id
 
     #Restart the bot
     sudo /bin/systemctl start phantombot
@@ -114,15 +109,6 @@ function backup()
     rm -rf $scriptPath/bot-backup
     # Backup current state
     mv $botPath $scriptPath/bot-backup
-
-}
-
-# Define a fixed delay duration
-
-function delay()
-{
-
-    sleep 0.2;
 
 }
 
@@ -152,9 +138,6 @@ printf "%s\n" >> $logfile
 
 #Start the update routine
 updatecheck
-
-#Update the version number
-printf $version > $botPath/version.id
 
 #Log to file
 log
